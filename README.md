@@ -1,1 +1,1 @@
-# mond-galaxy-rotation-curves
+Universal Gravity Acceleration Framework
