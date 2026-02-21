@@ -9,11 +9,11 @@ FOLDER_PATH = './data'
 FIGURES_PATH = './figures'
 KPC_TO_M = 3.086e19
 FIXED_ML = 0.5
-ALPHA_BHUT = 4.329e-11 
+ALPHA = 4.329e-11
 A0_MOND = 1.2e-10
 MAX_PLOT_R = 60.0      
 
-def get_bhut(v_newtonian, r_m, alpha):
+def get_alt_grav(v_newtonian, r_m, alpha):
     return np.sqrt((v_newtonian * 1000)**2 + alpha * r_m) / 1000
 
 def get_mond(v_gas, v_disk, v_bulge, ml_ratio, r_m):
@@ -59,11 +59,11 @@ def interp_avg(curves, radii_list):
 v_obs_smooth = interp_avg(all_v_obs, all_radii)
 v_newt_smooth = interp_avg(all_v_newt, all_radii)
 
-bhut_list = [get_bhut(vn, rd * KPC_TO_M, ALPHA_BHUT) for rd, vn in zip(all_radii, all_v_newt)]
+alt_grav_list = [get_alt_grav(vn, rd * KPC_TO_M, ALPHA) for rd, vn in zip(all_radii, all_v_newt)]
 mond_list = [get_mond(vg, vd, vb, FIXED_ML, rd * KPC_TO_M) 
              for rd, vg, vd, vb in zip(all_radii, all_v_gas, all_v_disk, all_v_bulge)]
 
-v_bhut_smooth = interp_avg(bhut_list, all_radii)
+v_alt_grav_smooth = interp_avg(alt_grav_list, all_radii)
 v_mond_smooth = interp_avg(mond_list, all_radii)
 
 plt.style.use('seaborn-v0_8-whitegrid')
@@ -76,8 +76,8 @@ plt.plot(common_r, v_newt_smooth, color='red', linestyle=':', label='Newtonian (
 plt.plot(common_r, v_mond_smooth, color='#1f77b4', linestyle='-', linewidth=3, 
          label=fr'MOND ($a_0={A0_MOND:.1e}$)')
 
-plt.plot(common_r, v_bhut_smooth, color='#2ca02c', linestyle='--', linewidth=3, 
-         label=fr'BHUT ($\alpha={ALPHA_BHUT:.2e}$)')
+plt.plot(common_r, v_alt_grav_smooth, color='#2ca02c', linestyle='--', linewidth=3, 
+        label=fr'Alternative Gravity Model ($\alpha={ALPHA:.2e}$)')
 
 plt.xlabel('Radius (kpc)', fontsize=14)
 plt.ylabel('Rotation Velocity (km/s)', fontsize=14)
@@ -87,7 +87,7 @@ plt.xlim(0, MAX_PLOT_R)
 
 valid_max = np.nanmax([
     np.nanmax(v_obs_smooth), 
-    np.nanmax(v_bhut_smooth), 
+    np.nanmax(v_alt_grav_smooth), 
     np.nanmax(v_mond_smooth)
 ])
 plt.ylim(0, valid_max * 1.2)

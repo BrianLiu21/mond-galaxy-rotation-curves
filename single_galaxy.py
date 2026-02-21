@@ -14,7 +14,7 @@ A0_MOND = 1.2e-10
 if not os.path.exists(FIGURES_PATH):
     os.makedirs(FIGURES_PATH)
 
-def get_bhut(v_newtonian, r_m, alpha):
+def get_alt_grav(v_newtonian, r_m, alpha):
     v_sq_si = (v_newtonian * 1000)**2 + alpha * r_m
     return np.sqrt(np.maximum(v_sq_si, 0)) / 1000
 
@@ -43,7 +43,7 @@ sse_list = []
 r_m = r * KPC_TO_M
 
 for a in alpha_grid:
-    v_model = get_bhut(v_newt, r_m, a)
+    v_model = get_alt_grav(v_newt, r_m, a)
     sse = np.sum((v_obs - v_model)**2)
     sse_list.append(sse)
 
@@ -65,7 +65,7 @@ v_bulge_s = interp_component(r, v_bulge, r_smooth)
 
 v_newt_smooth = np.sqrt(v_gas_s**2 + FIXED_ML * (v_disk_s**2 + v_bulge_s**2))
 v_mond_smooth = get_mond(v_newt_smooth, r_m_smooth)
-v_bhut_smooth = get_bhut(v_newt_smooth, r_m_smooth, best_alpha)
+v_alt_grav_smooth = get_alt_grav(v_newt_smooth, r_m_smooth, best_alpha)
 
 v_obs_smooth = interp_component(r, v_obs, r_smooth)
 
@@ -73,8 +73,8 @@ plt.style.use('seaborn-v0_8-whitegrid')
 plt.figure(figsize=(10, 6))
 
 plt.plot(r_smooth, v_mond_smooth, color='blue', alpha=0.8, linewidth=2, label='MOND (RAR)')
-plt.plot(r_smooth, v_bhut_smooth, color='green', linestyle='--', linewidth=2,
-         label=fr'BHUT ($\alpha$={best_alpha:.2e})')
+plt.plot(r_smooth, v_alt_grav_smooth, color='green', linestyle='--', linewidth=2,
+         label=fr'Alternative Gravity Model ($\alpha$={best_alpha:.2e})')
 plt.plot(r_smooth, v_newt_smooth, color='red', linestyle=':', linewidth=1.5, label='Newtonian (Baryons)')
 
 plt.plot(r_smooth, v_obs_smooth, color='black', alpha=0.3, linewidth=1) 

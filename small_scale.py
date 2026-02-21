@@ -17,7 +17,7 @@ ALPHA_GRID = np.logspace(-12, -10, 100)
 if not os.path.exists(FIGURES_PATH):
     os.makedirs(FIGURES_PATH)
 
-def get_bhut(v_newtonian, r_m, alpha):
+def get_alt_grav(v_newtonian, r_m, alpha):
     return np.sqrt((v_newtonian * 1000)**2 + alpha * r_m) / 1000
 
 def get_mond(v_gas, v_disk, v_bulge, ml_ratio, r_m):
@@ -67,22 +67,22 @@ v_newt_avg = interp_avg(all_v_newt, all_radii)
 
 sse_list = [] 
 for alpha in ALPHA_GRID:
-    temp_bhut_curves = [get_bhut(vn, rd * KPC_TO_M, alpha) for rd, vn in zip(all_radii, all_v_newt)]
-    bhut_avg = interp_avg(temp_bhut_curves, all_radii)
+    temp_alt_grav_curves = [get_alt_grav(vn, rd * KPC_TO_M, alpha) for rd, vn in zip(all_radii, all_v_newt)]
+    alt_grav_avg = interp_avg(temp_alt_grav_curves, all_radii)
     
-    mask = ~np.isnan(v_obs_avg) & ~np.isnan(bhut_avg)
-    sse = np.sum((v_obs_avg[mask] - bhut_avg[mask])**2)
+    mask = ~np.isnan(v_obs_avg) & ~np.isnan(alt_grav_avg)
+    sse = np.sum((v_obs_avg[mask] - alt_grav_avg[mask])**2)
     sse_list.append(sse)
 
 best_alpha = ALPHA_GRID[np.argmin(sse_list)]
 print(f"Optimization Complete.")
 print(f"Best Alpha for inner {FIT_RADIUS_KPC} kpc: {best_alpha:.3e}")
 
-bhut_best_curves = [get_bhut(vn, rd * KPC_TO_M, best_alpha) for rd, vn in zip(all_radii, all_v_newt)]
+alt_grav_best_curves = [get_alt_grav(vn, rd * KPC_TO_M, best_alpha) for rd, vn in zip(all_radii, all_v_newt)]
 mond_curves = [get_mond(vg, vd, vb, FIXED_ML, rd * KPC_TO_M) 
                for rd, vg, vd, vb in zip(all_radii, all_v_gas, all_v_disk, all_v_bulge)]
 
-v_bhut_smooth = interp_avg(bhut_best_curves, all_radii)
+v_alt_grav_smooth = interp_avg(alt_grav_best_curves, all_radii)
 v_mond_smooth = interp_avg(mond_curves, all_radii)
 
 plt.style.use('seaborn-v0_8-whitegrid')
@@ -92,8 +92,8 @@ plt.plot(common_r, v_obs_avg, color='black', label='Observed (Avg)', linewidth=2
 plt.plot(common_r, v_newt_avg, color='red', linestyle=':', label='Newtonian (Baryons)', linewidth=2)
 
 plt.plot(common_r, v_mond_smooth, color='blue', label='MOND (RAR)', linewidth=3)
-plt.plot(common_r, v_bhut_smooth, color='green', linestyle='--', 
-         label=fr'BHUT ($\alpha$={best_alpha:.2e})', linewidth=3)
+plt.plot(common_r, v_alt_grav_smooth, color='green', linestyle='--', 
+         label=fr'Alternative Gravity Model ($\alpha$={best_alpha:.2e})', linewidth=3)
 
 plt.xlabel('Radius (kpc)', fontsize=13)
 plt.ylabel('Rotation Velocity (km/s)', fontsize=13)
