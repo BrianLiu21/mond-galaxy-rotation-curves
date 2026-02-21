@@ -4,7 +4,7 @@ import os
 import matplotlib.pyplot as plt
 from scipy.interpolate import interp1d
 
-FILE_PATH = './data/NGC3198_rotmod.dat'  
+FILE_PATH = './data/DDO154_rotmod.dat'  
 FIGURES_PATH = './figures'
 
 KPC_TO_M = 3.086e19
