@@ -71,7 +71,7 @@ for alpha in ALPHA_GRID:
     alt_grav_avg = interp_avg(temp_alt_grav_curves, all_radii)
     
     mask = ~np.isnan(v_obs_avg) & ~np.isnan(alt_grav_avg)
-    sse = np.sum((v_obs_avg[mask] - alt_grav_avg[mask])**2)
+    sse= np.sum((v_obs_avg[mask] - alt_grav_avg[mask])**2)
     sse_list.append(sse)
 
 best_alpha = ALPHA_GRID[np.argmin(sse_list)]

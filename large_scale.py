@@ -44,7 +44,7 @@ for file_path in data_files:
     all_v_gas.append(v_gas); all_v_disk.append(v_disk); all_v_bulge.append(v_bulge)
 
 
-common_r = np.linspace(0.0, MAX_PLOT_R, 1200) 
+common_r= np.linspace(0.0, MAX_PLOT_R, 1200) 
 
 def interp_avg(curves, radii_list):
     interp_curves = []

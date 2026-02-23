@@ -29,7 +29,7 @@ def get_mond(v_newtonian, r_m):
 df = pd.read_csv(FILE_PATH, sep=r'\s+', header=None, comment='#')
 r_raw = df[0].values
 v_obs_raw = df[1].values
-v_gas_raw = np.abs(df[3].values)
+v_gas_raw= np.abs(df[3].values)
 v_disk_raw = np.abs(df[4].values)
 v_bulge_raw = np.abs(df[5].values)
 mask = (r_raw > 0) & (v_obs_raw > 0)

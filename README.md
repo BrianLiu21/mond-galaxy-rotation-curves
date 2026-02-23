@@ -126,14 +126,6 @@ Analysis outputs include:
 - Model residuals and goodness-of-fit metrics
 - Multi-galaxy parameter trends
 
-## Contributing
-
-Suggestions for improvements:
-- Test additional gravity models
-- Implement Bayesian parameter estimation
-- Add uncertainty propagation analysis
-- Expand galaxy sample
-
 ## Author
 
 BrianLiu21
