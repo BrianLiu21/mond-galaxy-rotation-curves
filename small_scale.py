@@ -103,7 +103,7 @@ plt.xlim(0, FIT_RADIUS_KPC)
 plt.legend(fontsize=11, frameon=True, shadow=True, loc='lower right')
 plt.tight_layout()
 
-output_path = os.path.join(FIGURES_PATH, 'SmallScale_Comparison.png')
+output_path = os.path.join(FIGURES_PATH, 'SmallScale_Average.png')
 plt.savefig(output_path, dpi=300)
 plt.show()
 

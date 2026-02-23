@@ -95,7 +95,7 @@ plt.ylim(0, valid_max * 1.2)
 plt.legend(fontsize=12, frameon=True, shadow=True, loc='lower right')
 plt.tight_layout()
 
-output_path = os.path.join(FIGURES_PATH, 'LargeScale_Comparison.png')
+output_path = os.path.join(FIGURES_PATH, 'LargeScale_Average.png')
 plt.savefig(output_path, dpi=300)
 plt.show()
 
